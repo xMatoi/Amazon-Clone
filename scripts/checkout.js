@@ -1,10 +1,16 @@
 import { renderItems } from "./orderSummary.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
-import { loadProducts } from "../data/products.js";
+import { loadProductsFetch } from "../data/products.js";
 
-
-loadProducts(()=>{
+async function loadPage() {
+    await loadProductsFetch();
     renderItems();
     renderPaymentSummary();
-});
+}
+
+loadPage();
+/*loadProducts(()=>{
+    renderItems();
+    renderPaymentSummary();
+});*/
 

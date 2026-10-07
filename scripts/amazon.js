@@ -1,9 +1,11 @@
 import { clientCart } from "../data/cart-class.js";
-import { loadProducts, products } from "../data/products.js";
+import { loadProductsFetch, products } from "../data/products.js";
 import { priceToCents } from "./utility/price.js";
 
 let htmlContent = '';
-loadProducts(renderProducts);
+loadProductsFetch().then(()=>{
+  renderProducts()
+});
 
 
 function renderProducts() {

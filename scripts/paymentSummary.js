@@ -4,6 +4,8 @@ import { deliveryOptions } from "../data/deliveryOptions.js";
 import { matchingProduct, products } from "../data/products.js";
 import { priceToCents } from "./utility/price.js";
 
+
+
 export function renderPaymentSummary() {
    let HTMLContent = '';
    let cartQuantity = 0;
