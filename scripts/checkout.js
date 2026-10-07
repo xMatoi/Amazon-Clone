@@ -3,9 +3,13 @@ import { renderPaymentSummary } from "./paymentSummary.js";
 import { loadProductsFetch } from "../data/products.js";
 
 async function loadPage() {
-    await loadProductsFetch();
-    renderItems();
-    renderPaymentSummary();
+    try{
+        await loadProductsFetch();
+        renderItems();
+        renderPaymentSummary();
+    } catch (e) {
+        console.log('An error has ocurred', e);
+    }
 }
 
 loadPage();
