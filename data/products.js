@@ -1,4 +1,51 @@
-export const products = [
+class Product {
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
+
+
+  constructor (productDetails){
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
+  }
+
+
+  getStarsUrl(){
+    return `images/ratings/rating-${this.rating.stars * 10}.png`;
+  }
+
+  getPrice(){
+    return `$${formatCurrency(this.priceCents)}`;
+  }
+
+  extraHTML(){
+    return '';
+  }
+
+}
+
+class Clothing extends Product{
+  sizeChartLink;
+
+  constructor(productDetails){
+    super(productDetails);
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
+
+  extraHTML(){
+    return `<a href="${this.sizeChartLink}" target="_blank">
+        Size chart
+            </a>`
+  }
+}
+
+
+/*export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -657,4 +704,46 @@ export const products = [
       "mens"
     ]
   }
-];
+].map((element)=> {
+  if (element.type === 'clothing') {
+    return new Clothing(element);
+  }else{
+    return new Product(element);
+  }
+});*/
+
+export let products = [];
+
+export function loadProducts(fun) {
+  const xhr = new XMLHttpRequest;
+  xhr.addEventListener('load', ()=>{
+    products = JSON.parse(xhr.response).map((element)=> {
+  if (element.type === 'clothing') {
+    return new Clothing(element);
+  }else{
+    return new Product(element);
+    }
+      });
+
+    fun();
+  });
+
+  xhr.open('GET', 'https://supersimplebackend.dev/products');
+  xhr.send();
+}
+
+
+
+export function matchingProduct(item) {
+  let matchingItem;
+  products.forEach(element =>{
+      if (element.id === item.productId) {
+      matchingItem = element;
+  }
+
+  })
+
+  return matchingItem;
+
+    
+}

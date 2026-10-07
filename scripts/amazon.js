@@ -1,8 +1,10 @@
-import { addProducts } from "../data/cart.js";
-import { products } from "../data/products.js";
-let htmlContent = '';
+import { clientCart } from "../data/cart-class.js";
+import { loadProducts, products } from "../data/products.js";
+import { priceToCents } from "./utility/price.js";
 
-renderProducts();
+let htmlContent = '';
+loadProducts(renderProducts);
+
 
 function renderProducts() {
     products.forEach((product)=>{
@@ -18,14 +20,14 @@ function renderProducts() {
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="images/ratings/rating-${(product.rating.stars)*10}.png">
+              src=${product.getStarsUrl()}>
             <div class="product-rating-count link-primary">
               ${product.rating.count}
             </div>
           </div>
 
           <div class="product-price">
-            ${(product.priceCents / 100).toFixed(2)}
+            $${priceToCents(product.priceCents)}
           </div>
 
           <div class="product-quantity-container">
@@ -43,6 +45,8 @@ function renderProducts() {
             </select>
           </div>
 
+          ${product.extraHTML()}
+          
           <div class="product-spacer"></div>
 
           <div class="added-to-cart">
@@ -59,14 +63,19 @@ function renderProducts() {
     })
 
     document.querySelector('.products-grid').innerHTML = htmlContent;
+    addEventListener();
     
 }
 
-const addBTN = document.querySelectorAll('.add-to-cart-button');
-const productQuantity = document.querySelectorAll('.product-amount');
+function addEventListener() {
+  const addBTN = document.querySelectorAll('.add-to-cart-button');
+  const productQuantity = document.querySelectorAll('.product-amount');
 
 
-addProducts(addBTN, productQuantity);
+  clientCart.addToCart(addBTN, productQuantity);
+}
+
+
 
 
 

@@ -1,4 +1,4 @@
-import { products } from "../data/products.js";
+import { matchingProduct, products } from "../data/products.js";
 
 export const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -8,7 +8,7 @@ function cartItemQuantity() {
         cartQuantity+=item.quantity
     })
 
-    console.log(cartQuantity);
+    
 }
 
 
@@ -39,7 +39,8 @@ export function addProducts(btns, amount) {
         }else{    
          cart.push({
             productId: products[i].id, 
-            quantity: selectedvalue}
+            quantity: selectedvalue,
+            deliveryId: 1}
         )
             cartQuantity+=selectedvalue;
        }
@@ -54,4 +55,25 @@ export function addProducts(btns, amount) {
 })
 }
 
+
+export function updateQuantity(id, quantity) {
+    let matchingItem;
+    let itemNumber;
+    cart.forEach((element, i)=>{
+        if (id === element.productId) {
+            matchingItem = matchingProduct(element);
+            itemNumber = i;
+        }
+       
+    })
+
+    if (matchingItem.id === id){
+        
+            cart[itemNumber].quantity = quantity;
+            console.log('Updated Quantity!');
+            localStorage.setItem('cart', JSON.stringify(cart));
+            return;
+        
+    }
+}
 cartItemQuantity();
