@@ -757,16 +757,9 @@ export function loadProducts(fun) {
 
 
 
+
 export function matchingProduct(item) {
-  let matchingItem;
-  products.forEach(element =>{
-      if (element.id === item.productId) {
-      matchingItem = element;
-  }
-
-  })
-
-  return matchingItem;
-
+ 
+return products.find(product => product.id === item)
     
 }

@@ -44,3 +44,8 @@ export function deliveryOptionPrice(index) {
   const price = deliveryOptions[index].priceCents === 0 ? 'FREE': `$${priceToCents(deliveryOptions[index].priceCents)} -`;
   return price;
 }
+
+export function arrivingDate(e) {
+  const newDate = dayjs(e).format('MMMM D');
+  return newDate;
+}

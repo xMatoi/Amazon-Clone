@@ -95,4 +95,4 @@ class Cart {
 };
 
 export const clientCart = new Cart('new-cart');
-console.log(clientCart);
+console.log(clientCart.cartItems);

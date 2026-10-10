@@ -1,8 +1,10 @@
 
 import { clientCart } from "../data/cart-class.js";
+import { itemsOrder } from "../scripts/orders.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
 import { matchingProduct, products } from "../data/products.js";
 import { priceToCents } from "./utility/price.js";
+import { cart } from "../data/cart.js";
 
 
 
@@ -43,14 +45,16 @@ export function renderPaymentSummary() {
             <div class="payment-summary-money" id="total"></div>
           </div>
 
-          <button class="place-order-button button-primary">
+          <button class="place-order-button button-primary order-btn">
             Place your order
           </button>`
 
           document.querySelector('.payment-summary').innerHTML = HTMLContent;
-
           calculateTotal();
+          addEventListeners();
 }
+
+
 
 function calculateItemTotal() {
     let itemTotal = 0;
@@ -58,7 +62,7 @@ function calculateItemTotal() {
 
     clientCart.cartItems.forEach(item =>{
 
-        matchingItem = matchingProduct(item);
+        matchingItem = matchingProduct(item.productId);
 
         if (matchingItem) {
             itemTotal+= matchingItem.priceCents;        
@@ -104,7 +108,40 @@ function calculateTotal() {
     document.getElementById('total').innerHTML = `$${orderTotal}`;
 }
 
-renderPaymentSummary();
+//renderPaymentSummary();
+//calculateItemTotal();
+//calculateShipping();
 
-calculateItemTotal();
-calculateShipping();
+
+
+function addEventListeners() {
+
+  document.querySelector('.order-btn')
+    .addEventListener('click', async()=>{
+      try {
+        const response = await fetch('https://supersimplebackend.dev/orders',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          cart: clientCart.cartItems
+        })  
+         });
+
+        const order = await response.json();
+        
+         itemsOrder.AddToOrders(order);
+
+         window.location.href = 'orders.html';
+
+      } catch (error) {
+        console.log('Unexpected Error', error);
+      }
+      });
+
+      
+  
+}
+
+
